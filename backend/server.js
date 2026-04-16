@@ -19,15 +19,15 @@ connectDB();
 const app = express();
 
 // ================= MIDDLEWARE =================
-app.use(cors({
-  origin: ["https://dev-productivity-platform.vercel.app"],
+const corsOptions = {
+  origin: "https://dev-productivity-platform.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
-}));
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://dev-productivity-platform.vercel.app");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  next();
-});
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); 
 app.use(express.json());
 
 const uploadsPath = path.resolve(__dirname, "uploads");
