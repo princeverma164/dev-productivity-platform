@@ -1,0 +1,126 @@
+.profile-page {
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  color: white;
+  display: flex;
+  gap: 20px;
+}
+
+.profile-card {
+  width: 260px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(15px);
+
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.profile-card img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.profile-card button {
+  margin-top: 12px;
+  padding: 10px 16px;
+
+  border-radius: 25px;
+  border: none;
+
+  background: linear-gradient(135deg, #7c3aed, #3b82f6);
+  color: white;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+.profile-card button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(59,130,246,0.5);
+}
+.profile-card button:active {
+  transform: scale(0.95);
+}
+
+.profile-details {
+  flex: 1;
+  position: relative;
+  z-index: 5;
+}
+.stats {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.stat-box {
+  flex: 1;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(12px);
+}
+.github-card {
+  background: rgba(255,255,255,0.25); 
+  backdrop-filter: blur(20px);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+.edit-form {
+  background: rgba(255,255,255,0.15);
+  padding: 15px;
+  border-radius: 12px;
+
+  /* 🔥 MAIN FIX */
+  position: relative;
+  z-index: 999;
+}
+
+.edit-form input,
+.edit-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+.edit-form textarea {
+  height: 80px;
+  resize: none;
+}
+
+.edit-form button {
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  background: linear-gradient(135deg, #a78bfa, #6366f1);
+  color: white;
+  position: relative;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.bio {
+  margin-top: 10px;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+button {
+  pointer-events: auto !important;
+  cursor: pointer;
+}

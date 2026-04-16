@@ -1,0 +1,128 @@
+.landing {
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+/* BUTTON */
+.get-started-btn {
+  position: absolute;
+  bottom: 80px;
+  left: 120px;
+  width: 200px;
+  padding: 14px 34px; /* slightly bigger */
+  border-radius: 14px;
+
+  /* Glass + Gradient merge */
+  background: linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.85),
+      rgba(139, 92, 246, 0.85)
+    ),
+    rgba(0, 0, 0, 0.35);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow:
+    0 6px 20px rgba(99, 102, 241, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+.get-started-btn:hover {
+  transform: translateY(-4px) scale(1.04);
+  box-shadow:
+    0 12px 40px rgba(139, 92, 246, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+
+  filter: brightness(1.1);
+}
+.get-started-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.05)
+  );
+
+  opacity: 0.5;
+  pointer-events: none;
+}
+.landing-image-section {
+  width: 100%;
+  padding: 80px 0;
+  background: #a790e1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* IMAGE FIX */
+.landing-image-section img {
+  width: 100%;
+  max-width: 1300px;
+
+  border-radius: 20px;
+
+  object-fit: contain;
+}
+.feedback-section {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.feedback-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px;
+}
+
+.feedback-card {
+  min-width: 100px;
+  height: 150px;
+  background: #cabeea;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.feedback-card img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.feedback-card h4 {
+  margin: 10px 0 5px;
+}
+
+.feedback-card p {
+  font-size: 13px;
+  color: #444;
+}
+
+.stars {
+  margin-top: 5px;
+}
+.feedback-section h2 {
+  font-size: 40px;
+}
+
+.feedback-section h3 {
+  font-size: 20px;
+  font-weight: 200; 
+}
