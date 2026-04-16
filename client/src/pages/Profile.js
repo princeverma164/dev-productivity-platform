@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import API from "../services/api";
+import API, { getAssetUrl } from "../services/api";
 import "./Profile.css";
 import bg from "../assets/profile-bg.jpg";
 import FeedbackWidget from "../components/FeedbackWidget"; // ✅ ADD
@@ -72,7 +72,7 @@ function Profile() {
         <img
           src={
             data.user.image
-              ? `http://localhost:5000/${data.user.image}`
+              ? getAssetUrl(data.user.image)
               : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
           }
           alt="profile"
@@ -98,7 +98,7 @@ function Profile() {
           <div className="stat-box">
             <h3>📊 Productivity</h3>
             <p>{data.productivityScore}%</p>
-          </div>
+             </div>
 
           <div className="stat-box">
             <h3>✅ Completed</h3>

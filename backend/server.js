@@ -2,7 +2,6 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
-require("dotenv").config();
 
 const connectDB = require("./src/config/db");
 
@@ -18,30 +17,50 @@ connectDB();
 
 const app = express();
 
-// ================= MIDDLEWARE =================
-app.use(cors({
-  origin: "https://dev-productivity-platform.vercel.app",
-  credentials: true,
-}));
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "https://dev-productivity-platform.vercel.app",
+].filter(Boolean);
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://dev-productivity-platform.vercel.app");
-  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
+const isAllowedOrigin = (origin = "") => {
+  if (!origin) {
+    return true;
   }
 
-  next();
-});
+  if (allowedOrigins.includes(origin)) {
+    return true;
+  }
+
+  return /\.vercel\.app$/i.test(new URL(origin).hostname);
+};
+
+// ================= MIDDLEWARE =================
+app.use(cors({
+  origin(origin, callback) {
+    try {
+      if (isAllowedOrigin(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    } catch (error) {
+      return callback(new Error("Invalid origin"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 200,
+}));
 
 app.use(express.json());
 
 const uploadsPath = path.resolve(__dirname, "uploads");
 console.log("UPLOADS PATH:", uploadsPath);
 
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(uploadsPath));
 
 // ROUTES 
 app.use("/api/auth", authRoutes);
@@ -59,6 +78,13 @@ app.get("/", (req, res) => {
 
 app.get("/test", (req, res) => {
   res.send("Test route working");
+});
+app.get("/api/test", (req, res) => {
+  res.json({
+    message: "working",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+  });
 });
 
 // ================= SERVER =================

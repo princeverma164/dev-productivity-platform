@@ -11,6 +11,7 @@ const getDashboardData = async (req, res) => {
 
     const totalTasks = tasks.length;
     const completedTasks = tasks.filter(t => t.completed).length;
+    const pendingTasks = totalTasks - completedTasks;
 
     const productivityScore =
       totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
@@ -41,7 +42,8 @@ const getDashboardData = async (req, res) => {
       productivityScore,
       tasks: {
         total: totalTasks,
-        completed: completedTasks
+        completed: completedTasks,
+        pending: pendingTasks
       },
       github: {
         username: user.githubUsername,
