@@ -10,20 +10,26 @@ function Register() {
   const navigate = useNavigate();
 
   const handleRegister = async () => {
-    try {
-      await API.post("/auth/register", {
-        name,
-        email,
-        password,
-      });
+  console.log("🔥 BUTTON CLICKED");
 
-      alert("Registration Successful");
+  try {
+    console.log("🚀 Calling API");
 
-      navigate("/"); // login page
-    } catch (error) {
-      alert(error.response?.data?.message || "Registration failed");
-    }
-  };
+    const res = await API.post("/auth/register", {
+      name,
+      email,
+      password,
+    });
+
+    console.log("✅ RESPONSE:", res.data);
+
+    alert("Registration Successful");
+    navigate("/");
+  } catch (error) {
+    console.log("❌ ERROR:", error);
+    alert(error.response?.data?.message || "Registration failed");
+  }
+};
 
   return (
     <div>
