@@ -21,7 +21,7 @@ const app = express();
 // ================= MIDDLEWARE =================
 const corsOptions = {
   origin: "https://dev-productivity-platform.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };
