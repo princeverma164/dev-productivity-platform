@@ -6,6 +6,7 @@ import "./Landing.css";
 import bg from "../assets/landing-bg.png";
 import features from "../assets/features.png";
 import testimonials from "../assets/testimonials.png";
+import { getAssetUrl } from "../services/api";
 
 function Landing() {
   const navigate = useNavigate();
@@ -58,9 +59,9 @@ function Landing() {
                 <img
                   src={
                     fb.image
-                      ? `http://localhost:5000/${fb.image}`
-                      : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                  }
+                     ? getAssetUrl(fb.image)
+                     : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                    }
                   alt=""
                 />
 

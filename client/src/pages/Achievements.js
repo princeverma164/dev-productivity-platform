@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import API from "../services/api";
+import API, { getAssetUrl } from "../services/api";
 import "./Achievements.css";
 
 function Achievements() {
-
   const [achievements, setAchievements] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -34,26 +33,24 @@ function Achievements() {
       formData.append("title", title);
       formData.append("description", description);
 
-      // ✅ only append if image exists
       if (image) {
         formData.append("image", image);
       }
 
-      console.log("FORM DATA:", title, description, image); // debug
+      console.log("FORM DATA:", title, description, image);
 
       if (editId) {
         await API.put(`/achievements/${editId}`, formData, {
-          headers: { "Content-Type": "multipart/form-data" }
+          headers: { "Content-Type": "multipart/form-data" },
         });
         alert("Updated ✅");
       } else {
         await API.post("/achievements", formData, {
-          headers: { "Content-Type": "multipart/form-data" }
+          headers: { "Content-Type": "multipart/form-data" },
         });
         alert("Added ✅");
       }
 
-      // RESET
       setTitle("");
       setDescription("");
       setImage(null);
@@ -61,7 +58,6 @@ function Achievements() {
       setEditId(null);
 
       fetchAchievements();
-
     } catch (err) {
       console.error("SUBMIT ERROR:", err.response?.data || err);
       alert(err.response?.data?.message || "Error uploading");
@@ -83,20 +79,15 @@ function Achievements() {
     setEditId(a._id);
     setTitle(a.title);
     setDescription(a.description);
-
-    // reset image (important)
     setImage(null);
     setPreview(null);
   };
 
   return (
     <div className="container">
-
       <h2>🏆 Achievements</h2>
 
-      {/* ================= FORM ================= */}
       <div className="form">
-
         <input
           placeholder="Title"
           value={title}
@@ -121,25 +112,20 @@ function Achievements() {
           }}
         />
 
-        {preview && (
-          <img src={preview} alt="preview" className="preview" />
-        )}
+        {preview && <img src={preview} alt="preview" className="preview" />}
 
         <button onClick={handleSubmit}>
           {editId ? "Update Achievement" : "Add Achievement"}
         </button>
-
       </div>
-      <div className="grid">
 
+      <div className="grid">
         {achievements.map((a) => (
           <div key={a._id} className="card">
-
-            {/* ✅ IMAGE SAFE CHECK */}
             {a.image && (
               <img
-               src={`http://localhost:5000/${(a.image || "").replace(/\\/g, "/")}`}
-             alt="achievement"
+                src={getAssetUrl((a.image || "").replace(/\\/g, "/"))}
+                alt="achievement"
               />
             )}
 
@@ -147,11 +133,7 @@ function Achievements() {
             <p>{a.description}</p>
 
             <div className="btn-group">
-
-              <button
-                className="edit-btn"
-                onClick={() => handleEdit(a)}
-              >
+              <button className="edit-btn" onClick={() => handleEdit(a)}>
                 Edit
               </button>
 
@@ -161,14 +143,10 @@ function Achievements() {
               >
                 Delete
               </button>
-
             </div>
-
           </div>
         ))}
-
       </div>
-
     </div>
   );
 }

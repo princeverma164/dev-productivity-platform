@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import API from "../services/api";
+import API, { getAssetUrl } from "../services/api";
 import "./Testimonials.css";
 
 function Testimonials() {
@@ -16,16 +16,15 @@ function Testimonials() {
 
   return (
     <div className="testimonial-section">
-      <h2>Our Clients Love Ladder ❤️</h2>
+      <h2>Our Clients Love Ladder</h2>
 
       <div className="testimonial-cards">
         {data.map((item, i) => (
           <div className="testimonial-card" key={i}>
-
             <img
               src={
                 item.image
-                  ? `http://localhost:5000/${item.image}`
+                  ? getAssetUrl(item.image)
                   : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
               }
               alt=""
@@ -35,13 +34,11 @@ function Testimonials() {
             <p>{item.message}</p>
 
             <div className="stars">
-              {"⭐".repeat(item.rating)}
+              {"★".repeat(item.rating)}
             </div>
-
           </div>
         ))}
       </div>
-
     </div>
   );
 }

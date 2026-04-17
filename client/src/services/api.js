@@ -1,8 +1,10 @@
 import axios from "axios";
 
 const rawApiUrl =
-  process.env.REACT_APP_API_URL ||
-  "https://productivity-backend-8i37.onrender.com";
+  (process.env.REACT_APP_API_URL || "").trim() ||
+  (process.env.NODE_ENV === "development"
+    ? "http://localhost:5000"
+    : "https://productivity-backend-8i37.onrender.com");
 
 const apiBaseUrl = rawApiUrl.endsWith("/api")
   ? rawApiUrl
@@ -23,9 +25,7 @@ API.interceptors.request.use((req) => {
 });
 
 export const getAssetUrl = (assetPath = "") => {
-  if (!assetPath) {
-    return "";
-  }
+  if (!assetPath) return "";
 
   if (/^https?:\/\//i.test(assetPath)) {
     return assetPath;
