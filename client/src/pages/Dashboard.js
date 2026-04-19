@@ -20,8 +20,32 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from "recharts";
+
+const formatDate = (value) => {
+  if (!value) return "No deadline";
+  return new Date(value).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+const getTaskStatus = (task) => {
+  if (!task.deadline) return "No deadline";
+  if (task.completed) return "Completed";
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const deadline = new Date(task.deadline);
+  deadline.setHours(0, 0, 0, 0);
+
+  if (deadline < today) return "Overdue";
+  if (deadline.getTime() === today.getTime()) return "Due today";
+  return "Upcoming";
+};
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -29,7 +53,6 @@ function Dashboard() {
   const [data, setData] = useState(null);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [githubUsername, setGithubUsername] = useState("");
-
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("darkMode") === "true"
   );
@@ -38,7 +61,6 @@ function Dashboard() {
     localStorage.setItem("darkMode", darkMode);
   }, [darkMode]);
 
-  // 🔥 BACKGROUND SWITCH
   const getBackground = () => {
     switch (activeTab) {
       case "tasks":
@@ -52,7 +74,6 @@ function Dashboard() {
     }
   };
 
-  // 🔥 FETCH DATA
   const fetchDashboard = async () => {
     try {
       const res = await API.get("/dashboard");
@@ -67,24 +88,32 @@ function Dashboard() {
     fetchDashboard();
   }, []);
 
-  // 🔥 LOGOUT
   const handleLogout = () => {
     localStorage.removeItem("token");
+    window.dispatchEvent(new Event("auth-change"));
     navigate("/");
   };
 
-  // 🔥 SAVE GITHUB
   const saveGithub = async () => {
     try {
       await API.put("/user/github", { githubUsername });
-      alert("GitHub Connected ✅");
+      alert("GitHub connected successfully");
       fetchDashboard();
     } catch (err) {
       console.error(err);
     }
   };
 
-  if (!data) return <h2>Loading...</h2>;
+  const markNotificationRead = async (id) => {
+    try {
+      await API.patch(`/notifications/${id}/read`);
+      fetchDashboard();
+    } catch (error) {
+      console.error("Notification update error:", error);
+    }
+  };
+
+  if (!data) return <h2 className="dashboard-loading">Loading...</h2>;
 
   return (
     <div
@@ -93,168 +122,172 @@ function Dashboard() {
         backgroundImage: `url(${getBackground()})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundRepeat: "no-repeat"
+        backgroundRepeat: "no-repeat",
       }}
     >
-      {/* 🔥 NAVBAR */}
       <div className="navbar">
+        <img src={logo} alt="logo" className="logo" />
 
-  {/* LOGO */}
-  <img src={logo} alt="logo" className="logo" />
+        <div className="tabs">
+          <span
+            className={activeTab === "dashboard" ? "active" : ""}
+            onClick={() => setActiveTab("dashboard")}
+          >
+            Dashboard
+          </span>
+          <span
+            className={activeTab === "tasks" ? "active" : ""}
+            onClick={() => setActiveTab("tasks")}
+          >
+            Tasks
+          </span>
+          <span
+            className={activeTab === "achievements" ? "active" : ""}
+            onClick={() => setActiveTab("achievements")}
+          >
+            Achievements
+          </span>
+          <span
+            className={activeTab === "analytics" ? "active" : ""}
+            onClick={() => setActiveTab("analytics")}
+          >
+            Analytics
+          </span>
+        </div>
 
-  {/* TABS */}
-  <div className="tabs">
-    <span
-      className={activeTab === "dashboard" ? "active" : ""}
-      onClick={() => setActiveTab("dashboard")}
-    >
-      Dashboard
-    </span>
+        <div className="nav-right">
+          <div className="profile" onClick={() => navigate("/profile")}>
+            {data.user.name}
+          </div>
+          <button className="theme-btn" onClick={() => setDarkMode(!darkMode)}>
+            {darkMode ? "Light" : "Dark"}
+          </button>
+          <button className="logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+      </div>
 
-    <span
-      className={activeTab === "tasks" ? "active" : ""}
-      onClick={() => setActiveTab("tasks")}
-    >
-      Tasks
-    </span>
-
-    <span
-      className={activeTab === "achievements" ? "active" : ""}
-      onClick={() => setActiveTab("achievements")}
-    >
-      Achievements
-    </span>
-
-    <span
-      className={activeTab === "analytics" ? "active" : ""}
-      onClick={() => setActiveTab("analytics")}
-    >
-      Analytics
-    </span>
-  </div>
-
-   {/* RIGHT SIDE */}
-   <div className="nav-right">
-    <div
-      className="profile"
-      onClick={() => navigate("/profile")}
-     >
-      👤 {data.user.name}
-     </div>
-     <button
-      className="theme-btn"
-      onClick={() => setDarkMode(!darkMode)}
-    >
-      {darkMode ? "☀️" : "🌙"}
-     </button>
-
-      {/* LOGOUT */}
-     <button
-       className="logout-btn"
-       onClick={handleLogout}
-     >
-        Logout
-     </button>
-
-    </div>
-
-   </div>
-
-      {/* 🔥 CONTENT */}
       <div className="content">
-
-        {/* DASHBOARD */}
         {activeTab === "dashboard" && (
           <>
-            <h2>Welcome, {data.user.name} 👋</h2>
+            <h2>Welcome, {data.user.name}</h2>
 
             <div className="cards">
-
-              {/* PRODUCTIVITY */}
               <div className="card glass-card">
-                <h3>📊My Productivity</h3>
-
+                <h3>My Productivity</h3>
                 <div className="progress-container">
                   <div
                     className="progress-bar"
                     style={{ width: `${data.productivityScore || 0}%` }}
                   />
                 </div>
-
-                <p className="progress-text">
-                  {data.productivityScore || 0}%
-                </p>
+                <p className="progress-text">{data.productivityScore || 0}%</p>
               </div>
 
-              {/* TASK */}
               <div className="card glass-card">
-                <h3>📝My Tasks</h3>
-
+                <h3>Task Summary</h3>
                 <div className="dual-bar">
                   <div
                     className="completed-bar"
                     style={{
                       width: data.tasks?.total
-                        ? (data.tasks.completed / data.tasks.total) * 100 + "%"
-                        : "0%"
+                        ? `${(data.tasks.completed / data.tasks.total) * 100}%`
+                        : "0%",
                     }}
                   />
-
                   <div
                     className="pending-bar"
                     style={{
                       width: data.tasks?.total
-                        ? (data.tasks.pending / data.tasks.total) * 100 + "%"
-                        : "0%"
+                        ? `${(data.tasks.pending / data.tasks.total) * 100}%`
+                        : "0%",
                     }}
                   />
                 </div>
-
                 <p>
-                  {data.tasks?.completed || 0} Done / {data.tasks?.pending || 0} Pending
+                  {data.tasks?.completed || 0} done / {data.tasks?.pending || 0} pending
                 </p>
               </div>
 
-              {/* GITHUB */}
               <div className="card glass-card">
-                <h3>🔥 GitHub</h3>
+                <h3>Current Streak</h3>
+                <p className="stat-value">{data.streak || 0} day streak</p>
+                <p>Complete one task daily to keep momentum alive.</p>
+              </div>
 
-                {data.github?.username ? (
-                  <>
-                    <img src={data.github.avatar} alt="" />
-                    <p>{data.github.username}</p>
-                    <p>{data.github.totalCommits} commits</p>
+              <div className="card glass-card report-card">
+                <h3>Weekly Report</h3>
+                <p className="stat-value">
+                  {data.coach?.weeklyReport?.productivityScore || 0}% productive
+                </p>
+                <p>{data.coach?.weeklyReport?.summary}</p>
+              </div>
+            </div>
 
-                    <a href={`https://github.com/${data.github.username}`} target="_blank" rel="noreferrer">
-                      View Profile 🔗
-                    </a>
-                  </>
+            <div style={{ marginTop: "20px" }}>
+              <div className="github-input">
+                <input
+                  placeholder="Enter GitHub username"
+                  value={githubUsername}
+                  onChange={(e) => setGithubUsername(e.target.value)}
+                />
+                <button className="github-save-btn" onClick={saveGithub}>
+                  Save GitHub
+                </button>
+              </div>
+            </div>
+
+            <div className="insights-grid">
+              <div className="insight-panel">
+                <h3>AI Coach Suggestions</h3>
+                <ul className="coach-list">
+                  {(data.coach?.suggestions || []).map((item, index) => (
+                    <li key={`${item}-${index}`}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="insight-panel">
+                <h3>Missed Deadlines</h3>
+                {data.coach?.missedDeadlines?.length ? (
+                  <div className="deadline-list">
+                    {data.coach.missedDeadlines.map((task) => (
+                      <div key={task.id} className="deadline-item">
+                        <strong>{task.title}</strong>
+                        <span>{formatDate(task.deadline)}</span>
+                        <span className="deadline-priority">{task.priority}</span>
+                      </div>
+                    ))}
+                  </div>
                 ) : (
-                  <p>Not Connected ❌</p>
+                  <p className="empty-state">No missed deadlines. Keep it up.</p>
                 )}
               </div>
 
+              <div className="insight-panel">
+                <h3>Notifications</h3>
+                {data.notifications?.length ? (
+                  <div className="notification-list">
+                    {data.notifications.map((notification) => (
+                      <button
+                        key={notification._id}
+                        className={`notification-item ${notification.read ? "read" : ""}`}
+                        onClick={() => markNotificationRead(notification._id)}
+                      >
+                        <strong>{notification.title}</strong>
+                        <span>{notification.message}</span>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="empty-state">No notifications yet.</p>
+                )}
+              </div>
             </div>
 
-            {/* GITHUB INPUT */}
-            <div style={{ marginTop: "20px" }}>
-              <div className="github-input">
-              <input
-              placeholder="Enter GitHub username"
-              value={githubUsername}
-               onChange={(e) => setGithubUsername(e.target.value)}
-            />
-
-  <button className="github-save-btn" onClick={saveGithub}>
-    🔗 Save
-  </button>
-</div>
-            </div>
-
-            {/* HEATMAP */}
             <div className="heatmap">
-              <h3>🔥 Last 7 Days Activity</h3>
-
+              <h3>Last 7 Days Activity</h3>
               <div className="heatmap-labels">
                 {data.weeklyStats?.map((day, i) => {
                   const d = new Date(day.date);
@@ -265,7 +298,6 @@ function Dashboard() {
                   );
                 })}
               </div>
-
               <div className="heatmap-grid">
                 {data.weeklyStats?.map((day, index) => (
                   <div
@@ -279,7 +311,7 @@ function Dashboard() {
                           ? "#86efac"
                           : day.tasks < 4
                           ? "#22c55e"
-                          : "#166534"
+                          : "#166534",
                     }}
                   />
                 ))}
@@ -288,37 +320,26 @@ function Dashboard() {
           </>
         )}
 
-        {/* TASKS */}
         {activeTab === "tasks" && <TasksSection />}
-
-        {/* ACHIEVEMENTS */}
         {activeTab === "achievements" && <Achievements />}
 
-        {/* 🔥 ANALYTICS FINAL */}
         {activeTab === "analytics" && (
           <div className="analytics-container">
-
-            <h2>📈 Analytics Overview</h2>
-
+            <h2>Analytics Overview</h2>
             <div className="chart-wrapper">
-
               <ResponsiveContainer width="100%" height={320}>
                 <LineChart data={data.weeklyStats}>
-
                   <CartesianGrid stroke="rgba(255,255,255,0.1)" />
-
                   <XAxis dataKey="date" stroke="#e5e7eb" />
                   <YAxis stroke="#e5e7eb" />
-
                   <Tooltip
                     contentStyle={{
                       background: "#111827",
                       border: "none",
                       borderRadius: "8px",
-                      color: "#fff"
+                      color: "#fff",
                     }}
                   />
-
                   <Line
                     type="monotone"
                     dataKey="tasks"
@@ -326,29 +347,23 @@ function Dashboard() {
                     strokeWidth={3}
                     dot={{ r: 4 }}
                   />
-
                 </LineChart>
               </ResponsiveContainer>
-
             </div>
-
           </div>
         )}
-
       </div>
 
-      {/* AI */}
       <AIChat />
-
     </div>
   );
 }
 
-/* TASK SECTION */
 function TasksSection() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState("medium");
+  const [deadline, setDeadline] = useState("");
 
   const fetchTasks = async () => {
     const res = await API.get("/tasks");
@@ -361,14 +376,22 @@ function TasksSection() {
 
   const addTask = async () => {
     if (!title.trim()) return alert("Enter task");
-    await API.post("/tasks", { title, priority });
+
+    await API.post("/tasks", {
+      title,
+      priority,
+      deadline: deadline || undefined,
+    });
+
     setTitle("");
+    setPriority("medium");
+    setDeadline("");
     fetchTasks();
   };
 
   const toggleTask = async (task) => {
     await API.put(`/tasks/${task._id}`, {
-      completed: !task.completed
+      completed: !task.completed,
     });
     fetchTasks();
   };
@@ -380,7 +403,7 @@ function TasksSection() {
 
   return (
     <div className="tasks-container">
-      <h2>📝 Task Tracker</h2>
+      <h2>Task Tracker</h2>
 
       <div className="task-input">
         <input
@@ -395,27 +418,35 @@ function TasksSection() {
           <option value="high">High</option>
         </select>
 
+        <input
+          type="date"
+          value={deadline}
+          onChange={(e) => setDeadline(e.target.value)}
+        />
+
         <button onClick={addTask}>Add</button>
       </div>
 
       <div className="task-list">
         {tasks.map((task) => (
           <div className="task-item" key={task._id}>
-            <span
-              onClick={() => toggleTask(task)}
-              className={task.completed ? "done" : ""}
-            >
-              {task.title}
-            </span>
+            <div className="task-copy">
+              <span
+                onClick={() => toggleTask(task)}
+                className={task.completed ? "done" : ""}
+              >
+                {task.title}
+              </span>
+              <small className={`task-status ${getTaskStatus(task).toLowerCase().replace(/\s+/g, "-")}`}>
+                {getTaskStatus(task)} | {formatDate(task.deadline)} | {task.priority}
+              </small>
+            </div>
 
             <div>
               <button onClick={() => toggleTask(task)}>
                 {task.completed ? "Undo" : "Done"}
               </button>
-
-              <button onClick={() => deleteTask(task._id)}>
-                Delete
-              </button>
+              <button onClick={() => deleteTask(task._id)}>Delete</button>
             </div>
           </div>
         ))}

@@ -12,6 +12,7 @@ const productivityRoutes = require("./src/routes/productivityRoutes");
 const dashboardRoutes = require("./src/routes/dashboardRoutes");
 const achievementRoutes = require("./src/routes/achievementRoutes");
 const feedbackRoutes = require("./src/routes/feedbackRoutes");
+const notificationRoutes = require("./src/routes/notificationRoutes");
 
 dotenv.config();
 connectDB();
@@ -80,6 +81,7 @@ app.use("/api/productivity", productivityRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/achievements", achievementRoutes);
 app.use("/api/feedback", feedbackRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // ================= TEST ROUTES =================
 app.get("/", (req, res) => {
