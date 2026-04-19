@@ -173,3 +173,37 @@
   background: rgba(255,255,255,0.3);
   border-radius: 10px;
 }
+
+@media (max-width: 768px) {
+  .ai-wrapper {
+    bottom: 88px;
+    right: 16px;
+  }
+
+  .ai-chatbox {
+    width: min(88vw, 340px);
+    height: min(62vh, 420px);
+  }
+}
+
+@media (max-width: 480px) {
+  .ai-wrapper {
+    right: 12px;
+    bottom: 84px;
+  }
+
+  .ai-float {
+    width: 54px;
+    height: 54px;
+    font-size: 22px;
+  }
+
+  .ai-chatbox {
+    width: min(92vw, 340px);
+    height: min(58vh, 400px);
+  }
+
+  .ai-tooltip {
+    display: none;
+  }
+}

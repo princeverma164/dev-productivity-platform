@@ -34,3 +34,30 @@
 .stars {
   margin-top: 10px;
 }
+
+@media (max-width: 768px) {
+  .testimonial-section {
+    padding: 56px 16px;
+  }
+
+  .testimonial-cards {
+    gap: 14px;
+    margin-top: 28px;
+  }
+
+  .testimonial-card {
+    width: min(100%, 340px);
+  }
+}
+
+@media (max-width: 480px) {
+  .testimonial-section {
+    padding: 44px 12px;
+  }
+
+  .testimonial-card {
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+  }
+}

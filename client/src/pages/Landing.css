@@ -1,5 +1,5 @@
 .landing {
-  height: 100vh;
+  min-height: 100vh;
   background-size: cover;
   background-position: center;
   position: relative;
@@ -61,7 +61,7 @@
 }
 .landing-image-section {
   width: 100%;
-  padding: 80px 0;
+  padding: 64px 20px;
   background: #a790e1;
 
   display: flex;
@@ -88,16 +88,19 @@
   gap: 20px;
   overflow-x: auto;
   padding: 20px;
+  scroll-snap-type: x proximity;
 }
 
 .feedback-card {
-  min-width: 100px;
-  height: 150px;
+  min-width: 220px;
+  max-width: 260px;
+  min-height: 180px;
   background: #cabeea;
   padding: 15px;
   border-radius: 12px;
   box-shadow: 0 5px 20px rgba(0,0,0,0.1);
   text-align: center;
+  scroll-snap-align: start;
 }
 
 .feedback-card img {
@@ -113,6 +116,8 @@
 .feedback-card p {
   font-size: 13px;
   color: #444;
+  line-height: 1.45;
+  word-break: break-word;
 }
 
 .stars {
@@ -125,4 +130,83 @@
 .feedback-section h3 {
   font-size: 20px;
   font-weight: 200; 
+}
+
+@media (max-width: 768px) {
+  .landing {
+    min-height: 82vh;
+    background-position: 62% center;
+  }
+
+  .get-started-btn {
+    left: 50%;
+    bottom: 36px;
+    transform: translateX(-50%);
+    width: min(82vw, 280px);
+    font-size: 18px;
+    padding: 14px 24px;
+  }
+
+  .get-started-btn:hover {
+    transform: translateX(-50%) translateY(-4px) scale(1.04);
+  }
+
+  .landing-image-section {
+    padding: 40px 14px;
+  }
+
+  .landing-image-section img {
+    border-radius: 16px;
+  }
+
+  .feedback-section {
+    padding: 32px 14px;
+  }
+
+  .feedback-section h2 {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .feedback-section h3 {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .feedback-container {
+    gap: 14px;
+    padding: 16px 4px;
+  }
+
+  .feedback-card {
+    min-width: 210px;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing {
+    min-height: 74vh;
+    background-position: 64% center;
+  }
+
+  .get-started-btn {
+    bottom: 24px;
+    width: min(86vw, 240px);
+    font-size: 16px;
+    border-radius: 12px;
+  }
+
+  .feedback-section h2 {
+    font-size: 24px;
+  }
+
+  .feedback-section h3 {
+    font-size: 15px;
+  }
+
+  .feedback-card {
+    min-width: 78vw;
+    max-width: 78vw;
+    min-height: 170px;
+  }
 }

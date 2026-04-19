@@ -1,6 +1,8 @@
 .dashboard {
   min-height: 100vh;
   padding: 20px;
+  position: relative;
+  overflow-x: hidden;
 
   background-size: cover;
   background-position: center;
@@ -11,29 +13,33 @@
 }
 
 .dashboard.dark {
-  background: none; 
+  background: none;
 }
+
 .dashboard::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.25); /* light overlay */
+  background: rgba(0, 0, 0, 0.25);
 }
 
 .dashboard > * {
   position: relative;
   z-index: 1;
 }
+
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 }
+
 .nav-right {
   display: flex;
   align-items: center;
   gap: 12px;
 }
-/* 🔥 GITHUB INPUT WRAPPER */
+
+/* GITHUB INPUT WRAPPER */
 .github-input {
   margin-top: 20px;
   display: flex;
@@ -43,58 +49,49 @@ body {
 .github-input input {
   width: 180px;
   max-width: 100%;
-
   padding: 10px;
   border-radius: 8px;
   border: none;
+  box-sizing: border-box;
 }
 
-/* 🔥 SAVE BUTTON */
+/* SAVE BUTTON */
 .github-save-btn {
   padding: 10px 16px;
-
   border-radius: 25px;
   border: none;
-
   background: linear-gradient(135deg, #7c3aed, #3b82f6);
   color: white;
-
   font-size: 13px;
   font-weight: 500;
-
   cursor: pointer;
-
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
 }
 
-/* HOVER */
 .github-save-btn:hover {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 12px 30px rgba(59,130,246,0.5);
+  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.5);
 }
 
-/* CLICK */
 .github-save-btn:active {
   transform: scale(0.95);
 }
 
-/*  NAVBAR */
+/* NAVBAR */
 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  background: rgba(0, 0, 0, 0.4); /* glass effect */
+  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(10px);
-
   color: white;
   padding: 15px 25px;
   border-radius: 12px;
 }
 
-/*  TABS  */
+/* TABS */
 
 .tabs {
   display: flex;
@@ -115,16 +112,16 @@ body {
   font-weight: bold;
 }
 
-/*  PROFILE */
+/* PROFILE */
 
 .profile {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
   padding: 6px 12px;
   border-radius: 20px;
   backdrop-filter: blur(10px);
 }
 
-/* CONTENT  */
+/* CONTENT */
 
 .content {
   margin-top: 20px;
@@ -134,7 +131,7 @@ body {
   color: white;
 }
 
-/*  CARDS  */
+/* CARDS */
 
 .cards {
   display: grid;
@@ -147,23 +144,18 @@ body {
 .cards .card {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
-
   border-radius: 16px;
   padding: 14px;
-
-  border: 1px solid rgba(255,255,255,0.4);
-
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   transition: 0.3s;
   text-align: center;
-
   overflow: hidden;
 }
 
 .cards .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 35px rgba(59,130,246,0.4);
+  box-shadow: 0 12px 35px rgba(59, 130, 246, 0.4);
 }
 
 /* TEXT */
@@ -199,7 +191,7 @@ body {
   margin-top: 6px;
 }
 
-/*  PRODUCTIVITY BAR  */
+/* PRODUCTIVITY BAR */
 
 .progress-container {
   width: 100%;
@@ -224,7 +216,7 @@ body {
   font-size: 13px;
 }
 
-/*  DUAL BAR */
+/* DUAL BAR */
 
 .dual-bar {
   display: flex;
@@ -243,6 +235,7 @@ body {
 .pending-bar {
   background: linear-gradient(90deg, #ef4444, #f87171);
 }
+
 .tasks-container {
   margin-top: 20px;
 }
@@ -258,6 +251,7 @@ body {
   padding: 10px;
   border-radius: 6px;
   border: none;
+  box-sizing: border-box;
 }
 
 .task-input button {
@@ -268,6 +262,7 @@ body {
   border-radius: 6px;
   cursor: pointer;
 }
+
 .heatmap {
   margin-top: 20px;
 }
@@ -298,13 +293,14 @@ body {
   border-radius: 5px;
 }
 
-/* ANALYTICS  */
+/* ANALYTICS */
 
 .chart-container {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   padding: 20px;
   border-radius: 12px;
 }
+
 .analytics-container {
   margin-top: 20px;
   padding: 10px;
@@ -313,14 +309,12 @@ body {
 .chart-wrapper {
   background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(14px);
-
   padding: 20px;
   border-radius: 18px;
-
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* DARK MODE*/
+/* DARK MODE */
 
 .dark {
   background: #0f172a;
@@ -330,6 +324,7 @@ body {
 .dark .navbar {
   background: rgba(0, 0, 0, 0.7);
 }
+
 .dark .cards .card {
   background: rgba(30, 41, 59, 0.95);
 }
@@ -345,6 +340,7 @@ body {
 .dark .cards .card a {
   color: #60a5fa;
 }
+
 .dark .dual-bar {
   background: #334155;
 }
@@ -352,36 +348,232 @@ body {
 .dark .progress-container {
   background: #334155;
 }
+
 .dark .heatmap-labels {
   color: #cbd5f5;
 }
+
 .logo {
   height: 80px;
   object-fit: contain;
 }
+
 .logout-btn {
   padding: 8px 14px;
-
   border-radius: 20px;
   border: none;
-
   background: linear-gradient(135deg, #ef4444, #f87171);
   color: white;
-
   font-size: 13px;
   font-weight: 500;
-
   cursor: pointer;
-
-  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
 }
+
 .theme-btn {
   padding: 6px 10px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
-
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #111827;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.task-item span {
+  flex: 1;
+  cursor: pointer;
+  word-break: break-word;
+  font-weight: 500;
+}
+
+.task-item span.done {
+  text-decoration: line-through;
+  opacity: 0.65;
+}
+
+.task-item div {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.task-item button {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: white;
+  background: #3b82f6;
+}
+
+.task-item button:last-child {
+  background: #ef4444;
+}
+
+@media (max-width: 1024px) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tabs {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 12px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 14px;
+  }
+
+  .logo {
+    height: 56px;
+    align-self: center;
+  }
+
+  .tabs {
+    gap: 12px;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tabs span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 4px;
+  }
+
+  .nav-right {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .profile {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    word-break: break-word;
+  }
+
+  .content h2,
+  .analytics-container h2,
+  .tasks-container h2,
+  .heatmap h3 {
+    font-size: 1.35rem;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .github-input,
+  .task-input {
+    flex-direction: column;
+  }
+
+  .github-input input,
+  .task-input input,
+  .task-input select,
+  .task-input button,
+  .github-save-btn {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .heatmap {
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .heatmap-labels,
+  .heatmap-grid {
+    width: max-content;
+  }
+
+  .chart-wrapper {
+    padding: 14px;
+  }
+
+  .task-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .task-item div {
+    width: 100%;
+  }
+
+  .task-item button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 10px;
+  }
+
+  .navbar {
+    border-radius: 16px;
+  }
+
+  .nav-right {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .logout-btn,
+  .theme-btn {
+    width: 100%;
+    border-radius: 12px;
+    padding: 10px 14px;
+  }
+
+  .cards .card {
+    padding: 12px;
+  }
+
+  .content h2,
+  .analytics-container h2,
+  .tasks-container h2,
+  .heatmap h3 {
+    font-size: 1.15rem;
+  }
+
+  .task-item {
+    padding: 12px;
+  }
 }
